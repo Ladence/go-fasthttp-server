@@ -1,0 +1,41 @@
+consumes:
+  - application/json
+info:
+  description: HTTP server in Go with Swagger endpoints definition by Ladence
+  title: go-fasthttp-server
+  version: 0.1.0
+produces:
+  - application/json
+schemes:
+  - http
+swagger: "2.0"
+
+paths:
+  /healthz:
+    get:
+      operationId: checkHealth
+      produces:
+        - text/plain
+      responses:
+        '200':
+          description: OK message.
+          schema:
+            type: string
+            enum:
+              - OK
+  /gopher/{name}:
+    get:
+      description: Return the Gopher Image.
+      produces:
+        - image/png
+      parameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+          description: The name of the Gopher to display.
+      responses:
+        200:
+          description: Returns the Gopher.
+          schema:
+            type: file

@@ -1,0 +1,28 @@
+  version: 3
+  vars:
+    GITHUB_URL: github.com/Ladence/go-fasthttp-server
+  tasks:
+    build:
+      desc: Build simple server
+      cmds:
+        - go build -o bin/server src/main.go
+    run:
+      desc: Run the app
+      cmds:
+        - GOFLAGS=-mod=mod go run internal/main.go
+    cleanup:
+      desc: Cleans build directory
+      cmds:
+        - rm -rf bin/*
+    swagger.gen:
+      desc: Generate Go code
+      cmds:
+        - GOFLAGS=-mod=mod go generate {{.GITHUB_URL}}/src {{.GITHUB_URL}}/pkg/swagger
+    swagger.validate:
+      desc: Validate swagger
+      cmds:
+        - swagger validate pkg/swagger/swagger.yml
+    swagger.doc:
+      desc: Doc for swagger
+      cmds:
+        - docker run -i yousan/swagger-yaml-to-html < pkg/swagger/swagger.yml > doc/index.html
